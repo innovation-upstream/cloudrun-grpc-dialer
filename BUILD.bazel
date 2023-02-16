@@ -26,6 +26,7 @@ go_test(
 )
 
 # gazelle:prefix github.com/innovation-upstream/cloudrun-grpc-dialer
+# gazelle:go_naming_convention go_default_library
 gazelle(
     name = "gazelle",
 )
