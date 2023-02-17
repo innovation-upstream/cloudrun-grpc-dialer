@@ -34,13 +34,11 @@ http_archive(
         "https://mirror.bazel.build/github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
         "https://github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
     ],
-
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
-
 
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
@@ -1078,34 +1076,6 @@ go_repository(
     importpath = "go.opencensus.io",
     sum = "h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=",
     version = "v0.24.0",
-)
-
-go_repository(
-    name = "io_opentelemetry_go_contrib_instrumentation_google_golang_org_grpc_otelgrpc",
-    importpath = "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc",
-    sum = "h1:MUes2rbdXa1ce9mwKYzTyBG0CtqpLT0NgKTFAz8FIDs=",
-    version = "v0.39.0",
-)
-
-go_repository(
-    name = "io_opentelemetry_go_otel",
-    importpath = "go.opentelemetry.io/otel",
-    sum = "h1:1ZAKnNQKwBBxFtww/GwxNUyTf0AxkZzrukO8MeXqe4Y=",
-    version = "v1.13.0",
-)
-
-go_repository(
-    name = "io_opentelemetry_go_otel_metric",
-    importpath = "go.opentelemetry.io/otel/metric",
-    sum = "h1:t0lgGI+L68QWt3QtOIlqM9gXoxqxWLhZ3R/e5oOAY0Q=",
-    version = "v0.36.0",
-)
-
-go_repository(
-    name = "io_opentelemetry_go_otel_trace",
-    importpath = "go.opentelemetry.io/otel/trace",
-    sum = "h1:CBgRZ6ntv+Amuj1jDsMhZtlAPT6gbyIRdaIzFhfBSdY=",
-    version = "v1.13.0",
 )
 
 go_repository(
