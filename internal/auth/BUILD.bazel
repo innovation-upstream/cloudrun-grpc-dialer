@@ -1,0 +1,12 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["auth.go"],
+    importpath = "github.com/innovation-upstream/cloudrun-grpc-dialer/internal/auth",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@org_golang_google_api//idtoken:go_default_library",
+        "@org_golang_google_grpc//metadata:go_default_library",
+    ],
+)

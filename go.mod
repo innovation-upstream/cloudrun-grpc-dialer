@@ -3,6 +3,7 @@ module github.com/innovation-upstream/cloudrun-grpc-dialer
 go 1.19
 
 require (
+	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
 	google.golang.org/api v0.109.0
 	google.golang.org/grpc v1.53.0

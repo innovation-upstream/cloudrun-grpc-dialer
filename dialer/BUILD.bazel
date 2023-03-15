@@ -1,0 +1,28 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "dialer.go",
+        "options.go",
+    ],
+    importpath = "github.com/innovation-upstream/cloudrun-grpc-dialer/dialer",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//internal/auth:go_default_library",
+        "//internal/connection:go_default_library",
+        "@com_github_pkg_errors//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//credentials:go_default_library",
+    ],
+)
+
+go_test(
+    name = "go_default_test",
+    srcs = ["dialer_test.go"],
+    embed = [":go_default_library"],
+    deps = [
+        "//internal/connection:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
+)

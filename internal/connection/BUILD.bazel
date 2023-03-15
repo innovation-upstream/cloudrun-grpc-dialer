@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["connection.go"],
+    importpath = "github.com/innovation-upstream/cloudrun-grpc-dialer/internal/connection",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//internal/auth:go_default_library",
+        "@com_github_pkg_errors//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
+)
