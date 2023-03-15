@@ -6,6 +6,7 @@ pkgs.mkShell {
     bazel_6
     go_1_19
     jdk11
+    gotools
   ];
 }
 
