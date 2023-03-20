@@ -126,3 +126,36 @@ func TestDialGRPC(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+type (
+	TestDialer interface {
+	}
+	testDialer struct {
+		realStruct *cloudrunGRPCDialer
+	}
+)
+
+func (l *testDialer) DialGRPCServices(
+	ctx context.Context,
+	eps []connection.CloudrunServiceName,
+	isTLS,
+	isAuthRequired bool,
+	dialOpts ...grpc.DialOption,
+) (connection.ServiceConnectionList, func(), error) {
+	return l.realStruct.DialGRPCServices(
+		ctx, eps, isTLS, isAuthRequired, dialOpts...,
+	)
+}
+
+func (l *testDialer) DialGRPCService(
+	ctx context.Context,
+	svc connection.CloudrunServiceName,
+	isTLS,
+	isAuthRequired bool,
+	dialOpts ...grpc.DialOption,
+) (connection.ServiceConnection, func(), error) {
+	return connection.ServiceConnection{
+		ServiceName: svc,
+		Connection:  nil,
+	}, nil, nil
+}

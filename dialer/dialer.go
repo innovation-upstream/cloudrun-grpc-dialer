@@ -164,26 +164,6 @@ func (l *cloudrunGRPCDialer) getEndpointForService(
 	return endpoint
 }
 
-func (l *cloudrunGRPCDialer) DialGRPCServices(
-	ctx context.Context,
-	svcs []connection.CloudrunServiceName,
-	isTLS,
-	isAuthRequired bool,
-	dialOpts ...grpc.DialOption,
-) (connection.ServiceConnectionList, func(), error) {
-	svcConns, cleanup, err := l.dialGRPCServices(ctx, svcs, isTLS, isAuthRequired, dialOpts...)
-	doCleanup := func() {
-		for _, c := range cleanup {
-			c()
-		}
-	}
-	if err != nil {
-		return svcConns, doCleanup, errors.WithStack(err)
-	}
-
-	return svcConns, doCleanup, nil
-}
-
 func (l *cloudrunGRPCDialer) DialGRPCService(
 	ctx context.Context,
 	svc connection.CloudrunServiceName,
@@ -208,13 +188,13 @@ func (l *cloudrunGRPCDialer) DialGRPCService(
 	return svcConn, cleanup, nil
 }
 
-func (l *cloudrunGRPCDialer) dialGRPCServices(
+func (l *cloudrunGRPCDialer) DialGRPCServices(
 	ctx context.Context,
 	eps []connection.CloudrunServiceName,
 	isTLS,
 	isAuthRequired bool,
 	dialOpts ...grpc.DialOption,
-) (connection.ServiceConnectionList, []func(), error) {
+) (connection.ServiceConnectionList, func(), error) {
 	emptySvcConns := connection.ServiceConnectionList{}
 
 	if len(eps) == 0 {
@@ -224,13 +204,16 @@ func (l *cloudrunGRPCDialer) dialGRPCServices(
 	head := eps[0]
 	tail := eps[1:]
 	chunk, cleanupChunk, err :=
-		l.dialGRPCServices(ctx, tail, isTLS, isAuthRequired, dialOpts...)
+		l.DialGRPCServices(ctx, tail, isTLS, isAuthRequired, dialOpts...)
 	if err != nil {
 		return emptySvcConns, cleanupChunk, errors.WithStack(err)
 	}
 
 	conn, cleanup, err := l.DialGRPCService(ctx, head, isTLS, isAuthRequired, dialOpts...)
-	cleanupAll := append(cleanupChunk, cleanup)
+	cleanupAll := func() {
+		cleanupChunk()
+		cleanup()
+	}
 	if err != nil {
 		return emptySvcConns, cleanupChunk, errors.WithStack(err)
 	}
