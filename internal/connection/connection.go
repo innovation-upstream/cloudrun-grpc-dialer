@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/innovation-upstream/cloudrun-grpc-dialer/internal/auth"
+	"github.com/innovation-upstream/cloudrun-grpc-dialer/auth"
+	internalAuth "github.com/innovation-upstream/cloudrun-grpc-dialer/internal/auth"
 	"github.com/innovation-upstream/cloudrun-grpc-dialer/service"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
 
 type (
-	AuthenticateGRPCContextFn func(context.Context) (context.Context, error)
-
 	ServiceEndpoint struct {
 		ServiceName service.CloudrunServiceName
 		RpcEndpoint string
@@ -33,7 +32,7 @@ type (
 
 func (c *ServiceConnection) GetAuthenticateGRPCContextFn(
 	isAuthRequired bool,
-) AuthenticateGRPCContextFn {
+) auth.AuthenticateGRPCContextFn {
 	return func(ctx context.Context) (context.Context, error) {
 		return c.AuthenticateGRPCContext(ctx, isAuthRequired)
 	}
@@ -44,7 +43,7 @@ func (c *ServiceConnection) AuthenticateGRPCContext(
 	isAuthRequired bool,
 ) (context.Context, error) {
 	ctx, err :=
-		auth.AuthenticateGRPCContext(ctx, c.Connection.RpcEndpoint, isAuthRequired)
+		internalAuth.AuthenticateGRPCContext(ctx, c.Connection.RpcEndpoint, isAuthRequired)
 	if err != nil {
 		return ctx, errors.WithStack(err)
 	}

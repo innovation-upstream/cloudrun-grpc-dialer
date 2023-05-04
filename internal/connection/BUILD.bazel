@@ -6,6 +6,7 @@ go_library(
     importpath = "github.com/innovation-upstream/cloudrun-grpc-dialer/internal/connection",
     visibility = ["//:__subpackages__"],
     deps = [
+        "//auth:go_default_library",
         "//internal/auth:go_default_library",
         "//service:go_default_library",
         "@com_github_pkg_errors//:go_default_library",
