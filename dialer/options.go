@@ -105,7 +105,7 @@ func withDefaultDefaultDialOptions() cloudrunGRPCDialerOption {
 	}
 }
 
-func WithDefaultDialOptions(opts []grpc.DialOption) cloudrunGRPCDialerOption {
+func WithDefaultDialOptions(opts ...grpc.DialOption) cloudrunGRPCDialerOption {
 	return func(d *cloudrunGRPCDialer) *cloudrunGRPCDialer {
 		d.defaultDialOptions = opts
 		return d
