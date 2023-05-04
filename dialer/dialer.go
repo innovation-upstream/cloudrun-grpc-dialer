@@ -5,17 +5,18 @@ import (
 	"strings"
 
 	"github.com/innovation-upstream/cloudrun-grpc-dialer/internal/connection"
+	"github.com/innovation-upstream/cloudrun-grpc-dialer/service"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
 
 type (
 	CloudrunGRPCDialer interface {
-		getCloudrunEndPointForService(svc connection.CloudrunServiceName) connection.ServiceEndpoint
+		getCloudrunEndPointForService(svc service.CloudrunServiceName) connection.ServiceEndpoint
 
 		DialGRPCServices(
 			ctx context.Context,
-			svcs []connection.CloudrunServiceName,
+			svcs []service.CloudrunServiceName,
 			isTLS,
 			isAuthRequired bool,
 			dialOpts ...grpc.DialOption,
@@ -23,7 +24,7 @@ type (
 
 		DialGRPCService(
 			ctx context.Context,
-			svcs connection.CloudrunServiceName,
+			svcs service.CloudrunServiceName,
 			isTLS bool,
 			isAuthRequired bool,
 			dialOpts ...grpc.DialOption,
@@ -39,7 +40,7 @@ type (
 	}
 
 	getEndpointForServiceFn func(
-		label connection.CloudrunServiceName,
+		label service.CloudrunServiceName,
 	) connection.ServiceEndpoint
 
 	cloudrunGRPCDialer struct {
@@ -113,7 +114,7 @@ func (l *cloudrunGRPCDialer) applyOptions(
 }
 
 func (l *cloudrunGRPCDialer) getCloudrunEndPointForService(
-	label connection.CloudrunServiceName,
+	label service.CloudrunServiceName,
 ) connection.ServiceEndpoint {
 	var sb strings.Builder
 	sb.WriteString(string(label))
@@ -133,7 +134,7 @@ func (l *cloudrunGRPCDialer) getCloudrunEndPointForService(
 }
 
 func (l *cloudrunGRPCDialer) getEndpointForServices(
-	labels []connection.CloudrunServiceName,
+	labels []service.CloudrunServiceName,
 ) []connection.ServiceEndpoint {
 	if labels == nil || len(labels) == 0 {
 		return nil
@@ -154,7 +155,7 @@ func (l *cloudrunGRPCDialer) getEndpointForServices(
 }
 
 func (l *cloudrunGRPCDialer) getEndpointForService(
-	label connection.CloudrunServiceName,
+	label service.CloudrunServiceName,
 ) connection.ServiceEndpoint {
 	var endpoint connection.ServiceEndpoint
 	if l.isCloudrunEnv {
@@ -168,7 +169,7 @@ func (l *cloudrunGRPCDialer) getEndpointForService(
 
 func (l *cloudrunGRPCDialer) DialGRPCService(
 	ctx context.Context,
-	svc connection.CloudrunServiceName,
+	svc service.CloudrunServiceName,
 	isTLS,
 	isAuthRequired bool,
 	dialOpts ...grpc.DialOption,
@@ -192,7 +193,7 @@ func (l *cloudrunGRPCDialer) DialGRPCService(
 
 func (l *cloudrunGRPCDialer) DialGRPCServices(
 	ctx context.Context,
-	eps []connection.CloudrunServiceName,
+	eps []service.CloudrunServiceName,
 	isTLS,
 	isAuthRequired bool,
 	dialOpts ...grpc.DialOption,

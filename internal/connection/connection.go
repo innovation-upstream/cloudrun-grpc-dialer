@@ -5,17 +5,16 @@ import (
 	"fmt"
 
 	"github.com/innovation-upstream/cloudrun-grpc-dialer/internal/auth"
+	"github.com/innovation-upstream/cloudrun-grpc-dialer/service"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
 
 type (
-	CloudrunServiceName string
-
 	AuthenticateGRPCContextFn func(context.Context) (context.Context, error)
 
 	ServiceEndpoint struct {
-		ServiceName CloudrunServiceName
+		ServiceName service.CloudrunServiceName
 		RpcEndpoint string
 	}
 
@@ -25,7 +24,7 @@ type (
 	}
 
 	ServiceConnection struct {
-		ServiceName CloudrunServiceName
+		ServiceName service.CloudrunServiceName
 		Connection  *ServiceGRPCConnection
 	}
 
@@ -54,13 +53,13 @@ func (c *ServiceConnection) AuthenticateGRPCContext(
 }
 
 func (l ServiceConnectionList) GetConnectionForService(
-	s CloudrunServiceName,
+	s service.CloudrunServiceName,
 ) (*ServiceConnection, error) {
 	return findDialedConnectionForService(s, l)
 }
 
 func findDialedConnectionForService(
-	s CloudrunServiceName,
+	s service.CloudrunServiceName,
 	connList ServiceConnectionList,
 ) (*ServiceConnection, error) {
 	if len(connList) == 0 {
