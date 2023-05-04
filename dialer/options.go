@@ -97,3 +97,17 @@ func withDefaultGetInsecureDialOptionsFn() cloudrunGRPCDialerOption {
 		return d
 	}
 }
+
+func withDefaultDefaultDialOptions() cloudrunGRPCDialerOption {
+	return func(d *cloudrunGRPCDialer) *cloudrunGRPCDialer {
+		d.defaultDialOptions = make([]grpc.DialOption, 0)
+		return d
+	}
+}
+
+func WithDefaultDialOptions(opts []grpc.DialOption) cloudrunGRPCDialerOption {
+	return func(d *cloudrunGRPCDialer) *cloudrunGRPCDialer {
+		d.defaultDialOptions = opts
+		return d
+	}
+}

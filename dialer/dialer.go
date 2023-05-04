@@ -60,6 +60,7 @@ type (
 		) (conn *grpc.ClientConn, err error)
 		getSecureDialOptionsFn   func() []grpc.DialOption
 		getInsecureDialOptionsFn func() []grpc.DialOption
+		defaultDialOptions       []grpc.DialOption
 	}
 
 	// CloudrunGRPCDialerFactory instantiates and returns a new
@@ -90,6 +91,7 @@ var NewCloudrunGRPCDialer CloudrunGRPCDialerFactory = func(
 		withDefaultDialFn(),
 		withDefaultGetSecureDialOptionsFn(),
 		withDefaultGetInsecureDialOptionsFn(),
+		withDefaultDefaultDialOptions(),
 	)
 	withOpts := withDefaultOpts.applyOptions(opts...)
 
@@ -255,6 +257,8 @@ func (g *cloudrunGRPCDialer) dialGRPC(
 	if err != nil {
 		return ctx, nil, err
 	}
+
+	dialOpts = append(dialOpts, g.defaultDialOptions...)
 
 	if isTLS {
 		tlsOpt := g.getSecureDialOptionsFn()
