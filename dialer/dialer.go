@@ -65,7 +65,7 @@ type (
 	// CloudrunGRPCDialerFactory instantiates and returns a new
 	// CloudrunServiceDialer
 	// cloudRunID - Your project's Cloudrun ID
-	// cloudRunID - Your project's Cloudrun ID
+	// cloudRunRegion - Your project's Cloudrun region
 	CloudrunGRPCDialerFactory func(
 		cloudRunID string,
 		cloudRunRegion string,
