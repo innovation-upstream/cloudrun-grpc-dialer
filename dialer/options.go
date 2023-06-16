@@ -112,3 +112,12 @@ func WithDefaultDialOptions(opts ...grpc.DialOption) cloudrunGRPCDialerOption {
 		return d
 	}
 }
+
+func WithGetDevEnvEndPointForServiceFn(
+	fn getEndpointForServiceFn,
+) cloudrunGRPCDialerOption {
+	return func(d *cloudrunGRPCDialer) *cloudrunGRPCDialer {
+		d.getDevEnvEndpointForServiceFn = fn
+		return d
+	}
+}
