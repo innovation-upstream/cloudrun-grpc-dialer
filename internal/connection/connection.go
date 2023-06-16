@@ -12,11 +12,6 @@ import (
 )
 
 type (
-	ServiceEndpoint struct {
-		ServiceName service.CloudrunServiceName
-		RpcEndpoint string
-	}
-
 	ServiceGRPCConnection struct {
 		RpcConn     *grpc.ClientConn
 		RpcEndpoint string

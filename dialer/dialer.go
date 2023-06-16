@@ -12,7 +12,7 @@ import (
 
 type (
 	CloudrunGRPCDialer interface {
-		getCloudrunEndPointForService(svc service.CloudrunServiceName) connection.ServiceEndpoint
+		getCloudrunEndPointForService(svc service.CloudrunServiceName) service.ServiceEndpoint
 
 		DialGRPCServices(
 			ctx context.Context,
@@ -41,7 +41,7 @@ type (
 
 	getEndpointForServiceFn func(
 		label service.CloudrunServiceName,
-	) connection.ServiceEndpoint
+	) service.ServiceEndpoint
 
 	cloudrunGRPCDialer struct {
 		cloudrunID                    string
@@ -115,7 +115,7 @@ func (l *cloudrunGRPCDialer) applyOptions(
 
 func (l *cloudrunGRPCDialer) getCloudrunEndPointForService(
 	label service.CloudrunServiceName,
-) connection.ServiceEndpoint {
+) service.ServiceEndpoint {
 	var sb strings.Builder
 	sb.WriteString(string(label))
 	sb.WriteRune('-')
@@ -127,7 +127,7 @@ func (l *cloudrunGRPCDialer) getCloudrunEndPointForService(
 	sb.WriteString(l.port)
 	ep := sb.String()
 
-	return connection.ServiceEndpoint{
+	return service.ServiceEndpoint{
 		RpcEndpoint: ep,
 		ServiceName: label,
 	}
@@ -135,7 +135,7 @@ func (l *cloudrunGRPCDialer) getCloudrunEndPointForService(
 
 func (l *cloudrunGRPCDialer) getEndpointForServices(
 	labels []service.CloudrunServiceName,
-) []connection.ServiceEndpoint {
+) []service.ServiceEndpoint {
 	if labels == nil || len(labels) == 0 {
 		return nil
 	}
@@ -144,7 +144,7 @@ func (l *cloudrunGRPCDialer) getEndpointForServices(
 	head := labels[ix]
 	tail := labels[0:ix]
 	chunk := l.getEndpointForServices(tail)
-	var endpoint connection.ServiceEndpoint
+	var endpoint service.ServiceEndpoint
 	if l.isCloudrunEnv {
 		endpoint = l.getCloudrunEndPointForService(head)
 	} else {
@@ -156,8 +156,8 @@ func (l *cloudrunGRPCDialer) getEndpointForServices(
 
 func (l *cloudrunGRPCDialer) getEndpointForService(
 	label service.CloudrunServiceName,
-) connection.ServiceEndpoint {
-	var endpoint connection.ServiceEndpoint
+) service.ServiceEndpoint {
+	var endpoint service.ServiceEndpoint
 	if l.isCloudrunEnv {
 		endpoint = l.getCloudrunEndPointForService(label)
 	} else {

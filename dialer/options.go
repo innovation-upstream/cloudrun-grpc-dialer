@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/innovation-upstream/cloudrun-grpc-dialer/internal/auth"
-	"github.com/innovation-upstream/cloudrun-grpc-dialer/internal/connection"
 	"github.com/innovation-upstream/cloudrun-grpc-dialer/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -39,8 +38,8 @@ func withDefaultPort() cloudrunGRPCDialerOption {
 }
 
 func getDefaultGetDevEnvEndPointForServiceFn() getEndpointForServiceFn {
-	return func(n service.CloudrunServiceName) connection.ServiceEndpoint {
-		return connection.ServiceEndpoint{
+	return func(n service.CloudrunServiceName) service.ServiceEndpoint {
+		return service.ServiceEndpoint{
 			ServiceName: n,
 			RpcEndpoint: "service:443",
 		}

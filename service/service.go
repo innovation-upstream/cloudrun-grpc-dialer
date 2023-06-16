@@ -1,3 +1,10 @@
 package service
 
-type CloudrunServiceName string
+type (
+	CloudrunServiceName string
+
+	ServiceEndpoint struct {
+		ServiceName CloudrunServiceName
+		RpcEndpoint string
+	}
+)
